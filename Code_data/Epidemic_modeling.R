@@ -92,7 +92,7 @@ gibbs <- function(para_init, init, N, time_length, dat){
     }
   }
   
-  for(i in 1:4){
+  for(i in c(2, 4)){
     if(runif(1) < 0.5){
       a <- 2
     }else{

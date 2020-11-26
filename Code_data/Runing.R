@@ -1,39 +1,35 @@
 setwd("D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-/Code_data")
 source("Epidemic_modeling.R")
 
+## Specify region
+region_mark <- 4
+source("Data_import.R")
+
 ## MCMC sampling
 # Initial step
-init_gene <- function(it){
+init_gene <- function(it, dat, Policy){
   para <- c(1, 5, 5)
-  alp <- c(runif(1, 0, 14), runif(1, 0, 14), runif(1), runif(1, 0, 2))
+  alp <- c(Policy[1], runif(1, 0, 14), Policy[2], runif(1, 0, 2))
   dpa <- runif(2, 1, 20)
-  I_init <- 1
+  I_init <- dat[[1]][1] + 1
   return(list(para, alp, dpa, I_init, -Inf))
 }
 
-l <- function(para_init, N, time_length, dat, init){
-  return(-likelihood(init, c(1, 2, 5.1), 
-                     para_init[1:4], N, time_length, dat, para_init[5]))
-}
-
-optim_l <- function(it){
-  para_init <- init_gene(it)
+Initial_sel <- function(it){
+  para_init <- init_gene(it, dat, Policy)
   for(h in 1:50){
     para <- gibbs(para_init, init, N, time_length, dat)
   }
-  # op <- optim(c(para[[2]], para[[3]]), l, N = N, time_length = time_length, dat = time_length, init = init, 
-  #       method = "L-BFGS-B", lower = rep(10^(-10), 5), upper = c(Inf, Inf, 1, Inf, Inf))
-  # para <- op$par
   return(para)
 }
 
 K <- 40
 sfInit(parallel = TRUE, cpus = K) 
 sfSource("Epidemic_modeling.R")
+sfExport("init_gene", "Initial_sel", "region_mark") 
 sfSource("Data_import.R")
-sfExport("init_gene", "l", "optim_l") 
 
-Result <- sfLapply(1:K, optim_l)
+Result <- sfLapply(1:K, Initial_sel)
 sfStop() 
 
 # Burn-in 
@@ -52,8 +48,8 @@ MCMC <- function(para_t, it){
 
 sfInit(parallel = TRUE, cpus = K) 
 sfSource("Epidemic_modeling.R")
+sfExport("init_gene", "MCMC", "region_mark") 
 sfSource("Data_import.R")
-sfExport("init_gene", "MCMC") 
 
 for(Cpu in 1:100){
   sfExport("para_t")  
@@ -79,8 +75,8 @@ MCMC <- function(para_t, it, G){
 
 sfInit(parallel = TRUE, cpus = K) 
 sfSource("Epidemic_modeling.R")
+sfExport("init_gene", "MCMC", "region_mark")
 sfSource("Data_import.R")
-sfExport("init_gene", "MCMC") 
 Result <- sfLapply(1:K, MCMC, para_t = para_t, G = K)
 sfStop()
 
@@ -89,7 +85,7 @@ para <- lapply(1:(length(Result) * a), function(i){
   Result[[(ceiling(i / a))]][[(i - a * (ceiling(i / a) - 1))]]
 })
 
-save(para, file =  paste0("para", region, ".rda"), version = 2)
+save(para, file =  paste0("Para_", region, ".rda"), version = 2)
 
 ## Predict function
 pred <- function(k, time_length, para, init, N){
