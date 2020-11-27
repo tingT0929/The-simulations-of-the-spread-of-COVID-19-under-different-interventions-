@@ -73,7 +73,24 @@ gibbs <- function(para_init, init, N, time_length, dat){
   I_init <- para_init[[4]]
   max_l <- para_init[[5]]
   
-  for(i in 2:3){
+  for(i in 2){
+    if(runif(1) < 0.5){
+      a <- 2
+    }else{
+      a <- 1.1
+    }
+    para_t <- para
+    para_t[i] <- rtnorm(1, 5.1, 0.325, a = 0, b = Inf)
+    l_t <- likelihood(init, para_t, alp, N, time_length, dat, dpa, I_init)
+    r <- l_t - max_l 
+    U <- log(runif(1))
+    if(U < r){
+      para <- para_t
+      max_l <- l_t
+    }
+  }
+  
+  for(i in 3){
     if(runif(1) < 0.5){
       a <- 2
     }else{

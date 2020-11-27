@@ -2,16 +2,16 @@ setwd("D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-diffe
 source("Epidemic_modeling.R")
 
 ## Specify region
-region_mark <- 4
+region_mark <- 1
 source("Data_import.R")
 
 ## MCMC sampling
 # Initial step
 init_gene <- function(it, dat, Policy){
-  para <- c(1, 5, 5)
+  para <- c(1, 5.1, 5)
   alp <- c(Policy[1], runif(1, 0, 14), Policy[2], runif(1, 0, 2))
   dpa <- runif(2, 1, 20)
-  I_init <- dat[[1]][1] + 1
+  I_init <- dat[[1]][1]
   return(list(para, alp, dpa, I_init, -Inf))
 }
 
@@ -100,8 +100,7 @@ pred_array <- array(0, c(length(para), time_length, 4))
 for(i in 1:length(para)){
   pred_array[i,,] <- Result[[i]] 
 }
-apply(pred_array, c(2,3), mean)[,3]
-apply(pred_array, c(2,3), mean)[,4]
+apply(pred_array, c(2,3), mean)
 
 ## Time-varying Reproduction number
 Rt <- sapply(1:length(para), function(k){
