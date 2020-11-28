@@ -2,7 +2,7 @@ setwd("D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-diffe
 source("Epidemic_modeling.R")
 
 ## Specify region
-region_mark <- 1
+region_mark <- 3
 source("Data_import.R")
 
 ## MCMC sampling
