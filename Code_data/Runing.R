@@ -2,7 +2,7 @@ setwd("D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-diffe
 source("Epidemic_modeling.R")
 
 ## Specify region
-region_mark <- 6
+region_mark <- 3
 source("Data_import.R")
 
 ## MCMC sampling
@@ -87,24 +87,3 @@ para <- lapply(1:(length(Result) * a), function(i){
 
 save(para, file =  paste0("Para_", region, ".rda"), version = 2)
 
-## Predict function
-pred <- function(k, time_length, para, init, N){
-  comp_num <- Dynamic(time_length, para[[k]][[1]], para[[k]][[2]], init, N, para[[k]][[4]])
-  colnames(comp_num) <- c("S", "I", "H", "R")
-  return(comp_num)
-}
-
-Result <- lapply(1:length(para), pred, para = para, time_length = time_length, init = init, N = N)
-
-pred_array <- array(0, c(length(para), time_length, 4))
-for(i in 1:length(para)){
-  pred_array[i,,] <- Result[[i]] 
-}
-apply(pred_array, c(2,3), mean)
-
-## Time-varying Reproduction number
-Rt <- sapply(1:length(para), function(k){
-  rt <- f_alp(1:time_length, para[[k]][[2]])
-  return(rt * para[[k]][[1]][2])
-})
-Rt_mean <- rowMeans(Rt)

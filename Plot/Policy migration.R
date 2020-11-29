@@ -1,4 +1,5 @@
-path = '/Users/zhangjingwen/Desktop/冠状病毒/统计分析/The-simulations_1128_v2/'
+# path = '/Users/zhangjingwen/Desktop/冠状病毒/统计分析/The-simulations_1128_v2/'
+path <- "D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-/"
 source(paste0(path, "Code_data/Epidemic_modeling.R"))
 
 load(paste0(path, "Code_data/Para_Shenzhen.rda"))
@@ -9,7 +10,7 @@ load(paste0(path, "Code_data/Para_Wuhan.rda"))
 wuhan = para
 
 
-region_mark = 6
+region_mark = 4
 load(paste0(path, "Code_data/All_dat.RDATA"))
 dat <- all_list[[region_mark]]$Data
 N <- all_list[[region_mark]]$Population
@@ -57,8 +58,8 @@ load(paste0(path, 'Code_data/Para_', region, ".rda"))
 list_sta <- list()
 list_end <- list()
 for(city in c('wuhan', 'wenzhou', 'shenzhen')) {
-  list_sta[[city]] <- lapply(1:length(para), pred, para = para, time_length= 150, init = init, N = N, city=city)
-  pred_array <- array(0, c(length(para), time_length= 150, 4))
+  list_sta[[city]] <- lapply(1:length(para), pred, para = para, time_length = 150, init = init, N = N, city = city)
+  pred_array <- array(0, c(length(para), time_length = 150, 4))
   for(i in 1:length(para)){
     pred_array[i,,] <- list_sta[[city]][[i]]
   }

@@ -1,4 +1,5 @@
-path = '/Users/zhangjingwen/Desktop/冠状病毒/统计分析/The-simulations_1128_v2/'
+# path = '/Users/zhangjingwen/Desktop/冠状病毒/统计分析/The-simulations_1128_v2/'
+path <- "D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-/"
 
 load(paste0(path, "Code_data/Para_Shenzhen.rda"))
 shenzhen = para
@@ -18,7 +19,7 @@ f_alp <- function(k, alp){
   alp[4] * (alp[3] / (1 + exp(2 * log(99) / alp[2] * (k - alp[1] - alp[2] / 2))) + 1 - alp[3])
 }  
 
-## 画图
+## Plot the time-varying reproduction number
 Plot_ALL <- function(shenzhen, wenzhou, wuhan) {
   today.wh = as.Date("2020/01/15") 
   today.wz = as.Date("2020/01/21") 
