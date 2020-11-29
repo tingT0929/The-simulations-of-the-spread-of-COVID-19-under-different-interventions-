@@ -55,20 +55,20 @@ Plot_ALL.2 <- function(result.wh, result.wz,result.sz, dat_real, start_date, end
     plot_out <- plot_out + 
       geom_text(aes(y = na_vec_all1, label = na_vec_all1), hjust = -1, vjust = 1.5,size = 4) + # 1
       geom_text(aes(y = na_vec_all1, label = na_vec_all2), hjust = 0.2, vjust = 1.5,size = 4) + # 2
-      scale_x_continuous(breaks = dat_plot$time_num[1:(length(dat_plot$time_num)/3) %% 10 == 1], 
-                         labels = dat_plot$time_lab[1:(length(dat_plot$time_num)/3) %% 10 == 1])
+      scale_x_continuous(breaks = c(dat_plot$time_num[1:(length(dat_plot$time_num)/3) %% 8 == 1], dat_plot$time_num[length(dat_plot$time_num) / 3]), 
+                         labels = c(dat_plot$time_lab[1:(length(dat_plot$time_num)/3) %% 8 == 1], dat_plot$time_lab[length(dat_plot$time_num) / 3]))
   } else if(area == "Italy") {
     plot_out <- plot_out + 
       geom_text(aes(y = na_vec_all1, label = na_vec_all1), hjust = 0.8, vjust = 1.5,size = 4) + # 1
       geom_text(aes(y = na_vec_all1, label = na_vec_all2), hjust = 2, vjust = 1.5,size = 4) + # 2
-      scale_x_continuous(breaks = dat_plot$time_num[1:(length(dat_plot$time_num)/3) %% 5 == 1], 
-                         labels = dat_plot$time_lab[1:(length(dat_plot$time_num)/3) %% 5 == 1])
+      scale_x_continuous(breaks = c(dat_plot$time_num[1:(length(dat_plot$time_num)/3) %% 5 == 1], dat_plot$time_num[length(dat_plot$time_num) / 3]), 
+                         labels = c(dat_plot$time_lab[1:(length(dat_plot$time_num)/3) %% 5 == 1], dat_plot$time_lab[length(dat_plot$time_num) / 3]))
   } else {
     plot_out <- plot_out + 
       geom_text(aes(y = na_vec_all1, label = na_vec_all1), hjust = 0.8, vjust = 1.5,size = 4) + # 1
       geom_text(aes(y = na_vec_all1, label = na_vec_all2), hjust = 2, vjust = 1.5,size = 4) + # 2
-      scale_x_continuous(breaks = dat_plot$time_num[1:(length(dat_plot$time_num)/3) %% 5 == 1], 
-                         labels = dat_plot$time_lab[1:(length(dat_plot$time_num)/3) %% 5 == 1])
+      scale_x_continuous(breaks = c(dat_plot$time_num[1:(length(dat_plot$time_num)/3) %% 5 == 1], dat_plot$time_num[length(dat_plot$time_num) / 3]), 
+                         labels = c(dat_plot$time_lab[1:(length(dat_plot$time_num)/3) %% 5 == 1], dat_plot$time_lab[length(dat_plot$time_num) / 3]))
   } 
     
   plot_out <- plot_out + 
