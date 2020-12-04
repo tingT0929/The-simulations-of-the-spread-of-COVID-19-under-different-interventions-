@@ -10,7 +10,7 @@ load(paste0(path, "Code_data/Para_Wuhan.rda"))
 wuhan = para
 
 
-region_mark = 4
+region_mark = 6
 load(paste0(path, "Code_data/All_dat.RDATA"))
 dat <- all_list[[region_mark]]$Data
 N <- all_list[[region_mark]]$Population
