@@ -17,7 +17,7 @@ N <- all_list[[region_mark]]$Population
 region <- all_list[[region_mark]]$Region
 
 ## Initial 
-init <- c(N, 0, dat[1,3], dat[1,4])
+init <- c(N, 0, dat[1,3] - dat[1,4], dat[1,4])
 
 
 Dynamic_p <- function(time_length, para, alp, init, N, I_init, city){
