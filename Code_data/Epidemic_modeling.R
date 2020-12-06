@@ -33,25 +33,52 @@ eqn <- function(time, init, para, N){
   return(list(c(dS, dI, dH, dR)))
 }
 
-Dynamic <- function(time_length, para, alp, init, N, I_init){
+Dynamic <- function(time_length, para, alp, init, N, I_init, wh_incu, region){
   comp_num <- matrix(init, nrow = 1)
   comp_num[2] <- I_init
   comp_num[1] <- N - sum(comp_num[-1])
-  for(i in 2:time_length){
-    para[1] <- f_alp(i-1, alp)
-    comp_num <- rbind(comp_num,
-                      as.numeric(ode(y = comp_num[i-1,], 
-                                     times = (i-1):(i), 
-                                     eqn, 
-                                     parms = para, 
-                                     N = N, 
-                                     atol = 1)[2,-1]))
-  }  
+  if(region == "Wuhan"){
+    for(i in 2:21){
+        para[1] <- f_alp(i-1, alp)
+        comp_num <- rbind(comp_num,
+                          as.numeric(ode(y = comp_num[i-1,], 
+                                         times = (i-1):(i), 
+                                         eqn, 
+                                         parms = para, 
+                                         N = N, 
+                                         atol = 1)[2,-1]))
+    }
+    
+    para[2] <- wh_incu
+    for(i in 22:time_length){
+      para[1] <- f_alp(i-1, alp)
+      comp_num <- rbind(comp_num,
+                        as.numeric(ode(y = comp_num[i-1,], 
+                                       times = (i-1):(i), 
+                                       eqn, 
+                                       parms = para, 
+                                       N = N, 
+                                       atol = 1)[2,-1]))
+    }
+    
+  }else{
+    for(i in 2:time_length){
+      para[1] <- f_alp(i-1, alp)
+      comp_num <- rbind(comp_num,
+                        as.numeric(ode(y = comp_num[i-1,], 
+                                       times = (i-1):(i), 
+                                       eqn, 
+                                       parms = para, 
+                                       N = N, 
+                                       atol = 1)[2,-1]))
+    }
+  }
+    
   return(comp_num)
 }
 
-likelihood <- function(init, para, alp, N, time_length, dat, dpa, I_init){
-  comp_num <- Dynamic(time_length, para, alp, init, N, I_init)
+likelihood <- function(init, para, alp, N, time_length, dat, dpa, I_init, wh_incu, region){
+  comp_num <- Dynamic(time_length, para, alp, init, N, I_init, wh_incu, region)
   fit_inC <- incre_tr(comp_num)
   
   Lik <- sum(sapply(1:2, function(k){
@@ -65,30 +92,15 @@ likelihood <- function(init, para, alp, N, time_length, dat, dpa, I_init){
   return(Lik)
 }
 
-gibbs <- function(para_init, init, N, time_length, dat){ 
+gibbs <- function(para_init, init, N, time_length, dat, region){ 
   
   para <- para_init[[1]]
   alp <- para_init[[2]]
   dpa <- para_init[[3]]
   I_init <- para_init[[4]]
   max_l <- para_init[[5]]
+  wh_incu <- para_init[[6]]
   
-  for(i in 2){
-    if(runif(1) < 0.5){
-      a <- 2
-    }else{
-      a <- 1.1
-    }
-    para_t <- para
-    para_t[i] <- rtnorm(1, 5.1, 0.325, a = 0, b = Inf)
-    l_t <- likelihood(init, para_t, alp, N, time_length, dat, dpa, I_init)
-    r <- l_t - max_l 
-    U <- log(runif(1))
-    if(U < r){
-      para <- para_t
-      max_l <- l_t
-    }
-  }
   
   for(i in 3){
     if(runif(1) < 0.5){
@@ -98,7 +110,7 @@ gibbs <- function(para_init, init, N, time_length, dat){
     }
     para_t <- para
     para_t[i] <- rlnorm(1, log(para[i]), log(a))
-    l_t <- likelihood(init, para_t, alp, N, time_length, dat, dpa, I_init)
+    l_t <- likelihood(init, para_t, alp, N, time_length, dat, dpa, I_init, wh_incu, region)
     r <- l_t - max_l +
       dlnorm(para[i], log(para_t[i]), log(a), log = T) -
       dlnorm(para_t[i], log(para[i]), log(a), log = T) 
@@ -117,7 +129,7 @@ gibbs <- function(para_init, init, N, time_length, dat){
     }
     alp_t <- alp
     alp_t[i] <- rlnorm(1, log(alp[i]), log(a))
-    l_t <- likelihood(init, para, alp_t, N, time_length, dat, dpa, I_init)
+    l_t <- likelihood(init, para, alp_t, N, time_length, dat, dpa, I_init, wh_incu, region)
     r <- l_t - max_l + 
       dlnorm(alp[i], log(alp_t[i]), log(a), log = T) - 
       dlnorm(alp_t[i], log(alp[i]), log(a), log = T) 
@@ -136,7 +148,7 @@ gibbs <- function(para_init, init, N, time_length, dat){
     }
     dpa_t <- dpa
     dpa_t[i] <- rlnorm(1, log(dpa[i]), log(a))
-    l_t <- likelihood(init, para, alp, N, time_length, dat, dpa_t, I_init)
+    l_t <- likelihood(init, para, alp, N, time_length, dat, dpa_t, I_init, wh_incu, region)
     r <- l_t - max_l + 
       dlnorm(dpa[i], log(dpa_t[i]), log(a), log = T) - 
       dlnorm(dpa_t[i], log(dpa[i]), log(a), log = T) 
@@ -153,7 +165,7 @@ gibbs <- function(para_init, init, N, time_length, dat){
     a <- 1.1
   }
   I_init_t <- rlnorm(1, log(I_init), log(a))
-  l_t <- likelihood(init, para, alp, N, time_length, dat, dpa, I_init_t)
+  l_t <- likelihood(init, para, alp, N, time_length, dat, dpa, I_init_t, wh_incu, region)
   r <- l_t - max_l + 
     dlnorm(I_init, log(I_init_t), log(a), log = T) - 
     dlnorm(I_init_t, log(I_init), log(a), log = T) 
@@ -163,6 +175,57 @@ gibbs <- function(para_init, init, N, time_length, dat){
     max_l <- l_t
   }
   
-  return(list(para, alp, dpa, I_init, max_l))
+  if(region == "Wuhan"){
+    for(i in 2){
+      if(runif(1) < 0.5){
+        a <- 2
+      }else{
+        a <- 1.1
+      }
+      para_t <- para
+      para_t[i] <- rtnorm(1, 16.1, 2, a = wh_incu, b = Inf)
+      l_t <- likelihood(init, para_t, alp, N, time_length, dat, dpa, I_init, wh_incu, region)
+      r <- l_t - max_l 
+        # log(dlnormTrunc(para[i], log(para_t[i]), log(a), wh_incu, Inf)) - 
+        # log(dlnormTrunc(para_t[i], log(para[i]), log(a), wh_incu, Inf)) +
+        # dtnorm(para_t[i], 15.1, 0.325, a = wh_incu, b = Inf, log = T) -
+        # dtnorm(para[i], 15.1, 0.325, a = wh_incu, b = Inf, log = T)
+      U <- log(runif(1))
+      if(U < r){
+        para <- para_t
+        max_l <- l_t
+      }
+    }
+    
+    if(runif(1) < 0.5){
+      a <- 2
+    }else{
+      a <- 1.1
+    }
+    wh_incu_t <- rlnormTrunc(1, log(wh_incu), log(a), 0, para[2])
+    l_t <- likelihood(init, para, alp, N, time_length, dat, dpa, I_init, wh_incu_t, region)
+    r <- l_t - max_l +
+      log(dlnormTrunc(wh_incu, log(wh_incu_t), log(a), 0, para[2])) - 
+      log(dlnormTrunc(wh_incu_t, log(wh_incu), log(a), 0, para[2]))
+    U <- log(runif(1))
+    if(U < r){
+      wh_incu <- wh_incu_t
+      max_l <- l_t
+    }
+  }else{
+    for(i in 2){
+      para_t <- para
+      para_t[i] <- rtnorm(1, 5.1, 0.325, a = 0, b = Inf)
+      l_t <- likelihood(init, para_t, alp, N, time_length, dat, dpa, I_init, wh_incu, region)
+      r <- l_t - max_l 
+      U <- log(runif(1))
+      if(U < r){
+        para <- para_t
+        max_l <- l_t
+      }
+    }
+  }
+  
+  return(list(para, alp, dpa, I_init, max_l, wh_incu))
 }
 

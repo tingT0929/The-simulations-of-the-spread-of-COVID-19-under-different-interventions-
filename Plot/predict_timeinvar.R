@@ -16,7 +16,7 @@ Policy <- all_list[[region_mark]]$Policy
 
 ## Initial 
 time_length <- nrow(dat)
-init <- c(N, 0, dat[1,3], dat[1,4])
+init <- c(N, 0, dat[1,3]-  dat[1,4], dat[1,4])
 dat <- incre_tr(dat)
 
 load(paste0('/Users/zhangjingwen/Desktop/冠状病毒/统计分析/The-simulations_1205/Code_data/Para_', region, '.rda'))

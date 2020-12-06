@@ -2,7 +2,7 @@ setwd("D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-diffe
 source("Epidemic_modeling.R")
 
 ## Specify region
-region_mark <- 3
+region_mark <- 1
 source("Data_import.R")
 
 ## MCMC sampling
@@ -12,13 +12,13 @@ init_gene <- function(it, dat, Policy){
   alp <- c(Policy[1], runif(1, 0, 14), Policy[2], runif(1, 0, 2))
   dpa <- runif(2, 1, 20)
   I_init <- dat[[1]][1]
-  return(list(para, alp, dpa, I_init, -Inf))
+  return(list(para, alp, dpa, I_init, -Inf, 2))
 }
 
 Initial_sel <- function(it){
   para_init <- init_gene(it, dat, Policy)
   for(h in 1:50){
-    para <- gibbs(para_init, init, N, time_length, dat)
+    para <- gibbs(para_init, init, N, time_length, dat, region)
   }
   return(para)
 }
@@ -40,7 +40,7 @@ para_t <- lapply(a, function(i){Result[[i]]})
 MCMC <- function(para_t, it){
   para_init <- para_t[[it]]
   for(h in 1:50){
-    para <- gibbs(para_init, init, N, time_length, dat)
+    para <- gibbs(para_init, init, N, time_length, dat, region)
     cat(c(h, para[[2]], para[[4]]), "\n")
   }
   return(para)
@@ -68,7 +68,7 @@ MCMC <- function(para_t, it, G){
   para[[1]] <- para_t[[it]]
   G <- 4000 / G 
   for(h in 2:G){
-    para[[h]] <- gibbs(para[[h-1]], init, N, time_length, dat)
+    para[[h]] <- gibbs(para[[h-1]], init, N, time_length, dat, region)
   }
   return(para)
 }
@@ -87,3 +87,10 @@ para <- lapply(1:(length(Result) * a), function(i){
 
 save(para, file =  paste0("Para_", region, ".rda"), version = 2)
 
+Rt_Wuhan <- function(para, time_length = 40) {
+  sapply(1:length(para), function(k){
+    rt <- f_alp(1:time_length, para[[k]][[2]])
+    rt <- c(rep(para[[k]][[1]][2], 21), rep(para[[k]][[6]], time_length - 21)) * rt
+    return(rt)
+  })
+}
