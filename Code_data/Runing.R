@@ -10,7 +10,7 @@ source("Data_import.R")
 init_gene <- function(it, dat, Policy, region){
   para <- c(1, 5.1, 5)
   if(region == "Wuhan"){
-    para <- c(1, 16.1, 5)
+    para <- c(1, 12.1, 5)
   }
   alp <- c(Policy[1], runif(1, 0, 14), Policy[2], runif(1, 0, 2))
   dpa <- runif(2, 1, 20)

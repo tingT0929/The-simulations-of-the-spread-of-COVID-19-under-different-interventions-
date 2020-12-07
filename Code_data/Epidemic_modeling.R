@@ -182,8 +182,8 @@ gibbs <- function(para_init, init, N, time_length, dat, region){
       r <- l_t - max_l +
         log(dlnormTrunc(para[i], log(para_t[i]), log(a), wh_incu, Inf)) -
         log(dlnormTrunc(para_t[i], log(para[i]), log(a), wh_incu, Inf)) +
-        dtnorm(para_t[i], 16.1, 0.325, a = wh_incu, b = 30, log = T) -
-        dtnorm(para[i], 16.1, 0.325, a = wh_incu, b = 30, log = T)
+        dtnorm(para_t[i], 12.1, 0.325, a = wh_incu, b = 30, log = T) -
+        dtnorm(para[i], 12.1, 0.325, a = wh_incu, b = 30, log = T)
       U <- log(runif(1))
       if(U < r){
         para <- para_t
@@ -195,7 +195,7 @@ gibbs <- function(para_init, init, N, time_length, dat, region){
     l_t <- likelihood(init, para, alp, N, time_length, dat, dpa, I_init, wh_incu_t, region)
     r <- l_t - max_l +
       log(dlnormTrunc(wh_incu, log(wh_incu_t), log(a), 0, para[2])) -
-      log(dlnormTrunc(wh_incu_t, log(wh_incu), log(a), 0, para[2])) 
+      log(dlnormTrunc(wh_incu_t, log(wh_incu), log(a), 0, para[2])) +
       dtnorm(wh_incu_t, 5.1, 0.325, a = 0, b = para[2], log = T) -
       dtnorm(wh_incu, 5.1, 0.325, a = 0, b = para[2], log = T)
     U <- log(runif(1))

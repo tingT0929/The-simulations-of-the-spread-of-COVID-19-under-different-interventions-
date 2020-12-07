@@ -1,9 +1,10 @@
 ###非时变
-path = '/Users/zhangjingwen//Desktop/冠状病毒/统计分析/The-simulations_1206_v2/'
+# path = '/Users/zhangjingwen//Desktop/冠状病毒/统计分析/The-simulations_1206_v2/'
+path <- "D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-/"
 source(paste0(path, "Code_data/Epidemic_modeling.R"))
 
 ## Specify region
-region_mark <- 7
+region_mark <- 9
 
 ## Data import
 load(paste0(path, "Code_data/All_dat.rdata"))

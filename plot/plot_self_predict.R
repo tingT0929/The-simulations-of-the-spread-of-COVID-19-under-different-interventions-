@@ -1,7 +1,8 @@
 library(ggplot2)
 library(tidyverse)
 
-setwd("D:/SC2S2/pneumonia/paper/code/1129/")
+# setwd("D:/SC2S2/pneumonia/paper/code/1129/")
+setwd("D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-/Plot/")
 
 formatter <- function(x) {
   if(x < 1e5) {
@@ -50,11 +51,11 @@ plot_self <- function(result, dat_real, area = "South Korea", start_date, N) {
   
   plot_out <- dat_plot %>%
     ggplot(aes(x = time_num)) +
-    geom_line(aes(y = I_pred, color = "Infected and infectious without isolation"), size = 1) +
-    geom_line(aes(y = all_pred, color = "Cumulative confirmed cases"), size = 1) +
-    geom_ribbon(aes(ymin = I_ci_l, ymax = I_ci_h, color = "Infected and infectious without isolation", fill = "Infected and infectious without isolation"), alpha = 0.1, linetype = 3) +
-    geom_ribbon(aes(ymin = all_ci_l, ymax = all_ci_h, color = "Cumulative confirmed cases", fill = "Cumulative confirmed cases"), alpha = 0.1, linetype = 3)+
-    geom_point(aes(y = real_num, shape =  "Actual cumulative confirmed cases"), size = 2, color = "purple")
+    # geom_line(aes(y = I_pred, color = "Infected and infectious without isolation"), size = 1) +
+    geom_line(aes(y = all_pred, color = "Fitting curve"), size = 1) +
+    # geom_ribbon(aes(ymin = I_ci_l, ymax = I_ci_h, color = "Infected and infectious without isolation", fill = "Infected and infectious without isolation"), alpha = 0.1, linetype = 3) +
+    geom_ribbon(aes(ymin = all_ci_l, ymax = all_ci_h), color = "red", fill = "red", alpha = 0.1, linetype = 3)+
+    geom_point(aes(y = real_num, shape =  "Observed cases"), size = 2, color = "purple")
   
   plot_out <- plot_out + 
     scale_color_manual(values = c("red", "#0072B2")) +
@@ -64,8 +65,8 @@ plot_self <- function(result, dat_real, area = "South Korea", start_date, N) {
     theme(panel.grid.minor = element_blank(),
           legend.position = "top",
           panel.border = element_blank(),
-          legend.box = "vertical",
-          legend.spacing.y = unit(0.01, 'cm'),
+          # legend.box = "vertical",
+          # legend.spacing.y = unit(0.01, 'cm'),
           text = element_text(family = "STHeiti"),
           plot.title = element_text(hjust = 0.5),
           axis.text.x = element_text(angle = 30)) +
@@ -85,7 +86,7 @@ plot_self <- function(result, dat_real, area = "South Korea", start_date, N) {
   return(plot_out)
 }
 
-load("All_dat.rdata")
+load("D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-/Code_data/All_dat.rdata")
 
 # Korea
 load("result_Korea_timeinvariant.rda")
