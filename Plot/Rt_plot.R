@@ -12,7 +12,15 @@ Rt <- function(para, time_length = 40) {
   sapply(1:length(para), function(k){
   rt <- f_alp(1:time_length, para[[k]][[2]])
   return(rt * para[[k]][[1]][2])
-})
+  })
+}
+
+Rt_Wuhan <- function(para, time_length = 40) {
+  sapply(1:length(para), function(k){
+    rt <- f_alp(1:time_length, para[[k]][[2]])
+    rt <- c(rep(para[[k]][[1]][2], 21), rep(para[[k]][[6]], time_length - 21)) * rt
+    return(rt)
+  })
 }
 
 f_alp <- function(k, alp){
@@ -28,7 +36,7 @@ Plot_ALL <- function(shenzhen, wenzhou, wuhan) {
 
   time_lab <- format(seq.Date(from = today.wh, to =today.end, by = "day"), format = "%m/%d")
   len = length(time_lab)
-  Rt_wh = rowMeans(Rt(wuhan))[1:len]
+  Rt_wh = rowMeans(Rt_Wuhan(wuhan))[1:len]
   Rt_wz = c(rep(NA, 6), rowMeans(Rt(wenzhou))[1:(len-6)])
   Rt_sz = c(rep(NA, 4), rowMeans(Rt(shenzhen))[1:(len-4)])
   dat_plot = data.frame(time_num = 1:len, time_lab, Rt_wh, Rt_wz, Rt_sz)
