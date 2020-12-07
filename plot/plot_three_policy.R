@@ -98,20 +98,26 @@ load("All_dat.rdata")
 # Korea
 start_date <- "2020-02-26"
 load("Korea_mi.rda")
-dat_real <- all_list$Korea$Data[, "H"]
+load("Korea.true(3).rda")
+dat_real <- global.K$cum_confirm[which(global.K$time == start_date):nrow(global.K)]
+# dat_real <- all_list$Korea$Data[, "H"]
 pre_Korea <- Plot_ALL.2(list_end[[1]], list_end[[2]], list_end[[3]], dat_real, start_date, end_date, area = "South Korea")
 ggsave(pre_Korea, filename = "pre_Korea.png", width = 11, height = 4, dpi = 300)
 
 # Italy
 start_date <- "2020-03-28"
 load("Italy_mi.rda")
-dat_real <- all_list$Italy$Data[, "H"]
+load("Italy.true(3).rda")
+dat_real <- global.I$cum_confirm[which(global.I$time == start_date):nrow(global.I)]
+# dat_real <- all_list$Italy$Data[, "H"]
 pre_Italy <- Plot_ALL.2(list_end[[1]], list_end[[2]], list_end[[3]], dat_real, start_date, end_date, area = "Italy")
 ggsave(pre_Italy, filename = "pre_Italy.png", width = 11, height = 4, dpi = 300)
 
 # USA
 start_date <- "2020-03-29"
 load("America_mi.rda")
-dat_real <- all_list$America$Data[, "H"]
+load("Unite.true(3).rda")
+dat_real <- global.U$cum_confirm[which(global.U$time == start_date):nrow(global.U)]
+# dat_real <- all_list$America$Data[, "H"]
 pre_America <- Plot_ALL.2(list_end[[1]], list_end[[2]], list_end[[3]], dat_real, start_date, end_date, area = "the United States")
 ggsave(pre_America, filename = "pre_America.png", width = 11, height = 4, dpi = 300)
