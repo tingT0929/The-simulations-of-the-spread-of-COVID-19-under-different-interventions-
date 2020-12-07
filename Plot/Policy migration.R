@@ -1,5 +1,5 @@
-path = '/Users/zhangjingwen//Desktop/冠状病毒/统计分析/The-simulations_1206_v2/'
-#path <- "D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-/"
+# path = '/Users/zhangjingwen//Desktop/冠状病毒/统计分析/The-simulations_1206_v2/'
+path <- "D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-/"
 source(paste0(path, "Code_data/Epidemic_modeling.R"))
 
 load(paste0(path, "Code_data/Para_Shenzhen.rda"))
@@ -10,7 +10,7 @@ load(paste0(path, "Code_data/Para_Wuhan.rda"))
 wuhan <- para
 
 
-region_mark = 5
+region_mark = 4
 load(paste0(path, "Code_data/All_dat.RDATA"))
 dat <- all_list[[region_mark]]$Data
 N <- all_list[[region_mark]]$Population
@@ -37,14 +37,11 @@ time_length=40
 
 Dynamic_p <- function(time_length, para_i, alp, init, N, I_init, city){
   if(city == 'wuhan') {
-    alp[2] = rowMeans(sapply(1:length(wuhan), function(k){wuhan[[k]][[2]]}))[2]/
-      rowMeans(Rt_Wuhan(wuhan, time_length=40))[1] * rowMeans(Rt(para))[1]
+    alp[2] = rowMeans(sapply(1:length(wuhan), function(k){wuhan[[k]][[2]]}))[2]
   } else if(city == 'wenzhou') {
-    alp[2] = rowMeans(sapply(1:length(wenzhou), function(k){wenzhou[[k]][[2]]}))[2]/
-      rowMeans(Rt(wenzhou))[1] * rowMeans(Rt(para))[1]
+    alp[2] = rowMeans(sapply(1:length(wenzhou), function(k){wenzhou[[k]][[2]]}))[2]
   } else if(city == 'shenzhen') {
-    alp[2] = rowMeans(sapply(1:length(shenzhen), function(k){shenzhen[[k]][[2]]}))[2]/
-      rowMeans(Rt(shenzhen))[1] * rowMeans(Rt(para))[1]
+    alp[2] = rowMeans(sapply(1:length(shenzhen), function(k){shenzhen[[k]][[2]]}))[2]
   }
   alp[3] = 1
   
