@@ -1,5 +1,5 @@
 ## Data import
-load("All_dat.RDATA")
+load("../Data/All_dat.RDATA")
 dat <- all_list[[region_mark]]$Data
 N <- all_list[[region_mark]]$Population
 region <- all_list[[region_mark]]$Region

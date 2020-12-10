@@ -1,13 +1,10 @@
-###非时变
-# path = '/Users/zhangjingwen//Desktop/冠状病毒/统计分析/The-simulations_1206_v2/'
-path <- "D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-/"
-source(paste0(path, "Code_data/Epidemic_modeling.R"))
+source("Code/Epidemic_modeling.R")
 
 ## Specify region
 region_mark <- 9
 
 ## Data import
-load(paste0(path, "Code_data/All_dat.rdata"))
+load(paste0(path, "Data/All_dat.rdata"))
 dat <- all_list[[region_mark]]$Data
 N <- all_list[[region_mark]]$Population
 region <- all_list[[region_mark]]$Region
@@ -19,7 +16,7 @@ time_length <- nrow(dat)
 init <- c(N, 0, dat[1,3]-  dat[1,4], dat[1,4])
 dat <- incre_tr(dat)
 
-load(paste0(path, 'Code_data/Para_', region, ".rda"))
+load(paste0(path, 'Result/Para_', region, ".rda"))
 
 pred <- function(k, time_length, para, init, N, region){
   comp_num <- Dynamic(time_length, para[[k]][[1]], para[[k]][[2]], init, N, para[[k]][[4]], region = region)
@@ -41,5 +38,5 @@ time_invariant[['H']] <- sapply(1:150, function(j)
 time_invariant[['R']] <- sapply(1:150, function(j)
 {quantile(pred_array[,j,4], c(0.025, 0.5, 0.975))})
 
-save(time_invariant, file = paste0(path, 'Plot/result_', region, '.rda'),version=2)
+save(time_invariant, file = paste0(path, 'Result/result_', region, '.rda'),version=2)
 

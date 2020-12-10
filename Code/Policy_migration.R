@@ -1,17 +1,15 @@
-# path = '/Users/zhangjingwen//Desktop/冠状病毒/统计分析/The-simulations_1206_v2/'
-path <- "D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-/"
-source(paste0(path, "Code_data/Epidemic_modeling.R"))
+source("Code_data/Epidemic_modeling.R")
 
-load(paste0(path, "Code_data/Para_Shenzhen.rda"))
+load("Result/Para_Shenzhen.rda")
 shenzhen <- para
-load(paste0(path, "Code_data/Para_Wenzhou.rda"))
+load("Result/Para_Wenzhou.rda")
 wenzhou <- para
-load(paste0(path, "Code_data/Para_Wuhan.rda"))
+load("Result/Para_Wuhan.rda")
 wuhan <- para
 
 
 region_mark = 4
-load(paste0(path, "Code_data/All_dat.RDATA"))
+load(paste0(path, "Data/All_dat.RDATA"))
 dat <- all_list[[region_mark]]$Data
 N <- all_list[[region_mark]]$Population
 region <- all_list[[region_mark]]$Region
@@ -87,7 +85,7 @@ for(city in c('wuhan', 'wenzhou', 'shenzhen')) {
   {quantile(pred_array[,j,4], c(0.025, 0.5, 0.975))})
 }
 
-save(list_end, file = paste0(path, 'Plot/', region, "_mi.rda"), version = 2)
+save(list_end, file = paste0(path, 'Result/', region, "_mi.rda"), version = 2)
 
 
 

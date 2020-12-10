@@ -1,4 +1,4 @@
-setwd("D:/Documents/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-/Code_data")
+setwd("Code")
 source("Epidemic_modeling.R")
 
 ## Specify region
@@ -88,4 +88,4 @@ para <- lapply(1:(length(Result) * a), function(i){
   Result[[(ceiling(i / a))]][[(i - a * (ceiling(i / a) - 1))]]
 })
 
-save(para, file =  paste0("Para_", region, ".rda"), version = 2)
+save(para, file =  paste0("../Result/Para_", region, ".rda"), version = 2)
