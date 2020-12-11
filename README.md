@@ -24,7 +24,8 @@ The data were orignially collected by the authors.
 The codes incorported all the scripts to reproduce the analysis in the paper. 
 
 ### 2) Reporducibility
-- The estimation of susceptible class (S), infectious class without isolation (I), confirmed class(C), and removed class (R) for the Equation (1) in the paper by runing `Epidemic_modeling.R`.
+- The estimation of the parameters of the SICR model in the paper by runing `Running.R`, where the `region_mark` could be changed as 1-9, representing the running procedure for Wuhan, Wenzhou, Shenzhen, Korea (for policy migration), the United states (for policy migration), Italy (for policy migration), Italy (for the simulation of constant outbreak)£¬ Korea (for the simulation of constant outbreak) and the United States (for the simulation of constant outbreak), respectively.
+
 
 ----
 ## 3. Result
