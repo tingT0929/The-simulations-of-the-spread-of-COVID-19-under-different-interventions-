@@ -1,4 +1,4 @@
-# The-simulations-of-the-spread-of-COVID-19-under-different-interventions-
+﻿# The-simulations-of-the-spread-of-COVID-19-under-different-interventions-
 Data-driven analysis of the simulations of the spread of COVID-19 under different interventions of China
 
 
@@ -43,6 +43,6 @@ c. "region" is the name of the region;
 
 ----
 ## 3. Result
-There are intermediate results about parameters of time-varying reproduction numbers for three respresentive cities in `Para_Wuhan.rda`, `Para_Wenzhou.rda`, and `Para_Shenzhen.rda`; for three counties in `Para_Italy.rda`, `Para_Korea.rda`, and `Para_America.rda`; parameters of invariant reproduction numbers for three counties in `Para_Italy_timeinvariant.rda`, `Para_Korea_timeinvariant.rda`, and `Para_America_timeinvariant.rda`. 
+There are intermediate results about parameters of time-varying reproduction numbers for three respresentive cities in `Para_Wuhan.rda`, `Para_Wenzhou.rda`, and `Para_Shenzhen.rda`; for three counties in `Para_Italy.rda`, `Para_Korea.rda`, and `Para_America.rda`; parameters for three counties without interventions in `Para_Italy_timeinvariant.rda`, `Para_Korea_timeinvariant.rda`, and `Para_America_timeinvariant.rda`. 
 
 
