@@ -4,7 +4,7 @@ Data-driven analysis of the simulations of the spread of COVID-19 under differen
 
 ## 1. Data 
 ### 1) Abstract
-Our data source consists of cumulative confirmed cases, cumulative recovery cases and total deaths for Italy, Korea, and the United States were downloaded through May 31, 2020
+Our data source consists of cumulative confirmed cases, cumulative recovery cases and total deaths for Italy, Korea, and the United States were downloaded through 31 May 2020
 from "nCov2019" package. Also, the reported numbers of cumulative confirmed cases, cumulative recovery cases, and total deaths from January 15 to February 12 in Wuhan, from January 21 to February 9 in Wenzhou, and from January 19 to February 6 in Shenzhen are collected.
 
 ### 2) Availability
