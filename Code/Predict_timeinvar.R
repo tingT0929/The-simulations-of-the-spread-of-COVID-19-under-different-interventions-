@@ -1,3 +1,4 @@
+setwd("~/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-")
 source("Code/Epidemic_modeling.R")
 
 ## Specify region

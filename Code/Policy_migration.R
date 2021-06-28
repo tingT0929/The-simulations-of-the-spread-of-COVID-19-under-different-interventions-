@@ -1,4 +1,6 @@
-source("Code_data/Epidemic_modeling.R")
+setwd("~/GitHub/The-simulations-of-the-spread-of-COVID-19-under-different-interventions-")
+
+source("Code/Epidemic_modeling.R")
 
 load("Result/Para_Shenzhen.rda")
 shenzhen <- para
@@ -7,9 +9,8 @@ wenzhou <- para
 load("Result/Para_Wuhan.rda")
 wuhan <- para
 
-
-region_mark = 4
-load(paste0(path, "Data/All_dat.RDATA"))
+region_mark = 4 # 1, 2, ..., 6
+load("Data/All_dat.RDATA")
 dat <- all_list[[region_mark]]$Data
 N <- all_list[[region_mark]]$Population
 region <- all_list[[region_mark]]$Region
@@ -66,7 +67,7 @@ pred <- function(k, time_length, para, init, N, city){
 }
 
 ####---------- running
-load(paste0(path, 'Code_data/Para_', region, ".rda"))
+load(paste0('Result/Para_', region, ".rda"))
 
 list_sta <- list()
 list_end <- list()
@@ -85,7 +86,7 @@ for(city in c('wuhan', 'wenzhou', 'shenzhen')) {
   {quantile(pred_array[,j,4], c(0.025, 0.5, 0.975))})
 }
 
-save(list_end, file = paste0(path, 'Result/', region, "_mi.rda"), version = 2)
+save(list_end, file = paste0('Result/', region, "_mi.rda"), version = 2)
 
 
 
